@@ -14,8 +14,8 @@ public class Player : MonoBehaviour {
 
     //Components
     Rigidbody2D myBody2D;
-    Transform footBL;
-    Transform footTR;
+    public Transform footBL;
+    public Transform footTR;
 
     //Other
     bool canJump = true;
