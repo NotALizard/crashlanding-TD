@@ -21,7 +21,6 @@ public class Player : MonoBehaviour {
 
     //Other
     bool canJump = true;
-    bool facingRight = true;
     int moveDirection;
     public LayerMask ground;
 
@@ -49,20 +48,10 @@ public class Player : MonoBehaviour {
         if (left && !right)
         {
             moveDirection = -1;
-            if (facingRight)
-            {
-                transform.localRotation = Quaternion.Euler(0, 180, 0);
-                facingRight = false;
-            }
         }
         else if(right && !left)
         {
             moveDirection = 1;
-            if (!facingRight)
-            {
-                transform.localRotation = Quaternion.Euler(0, 0, 0);
-                facingRight = true;
-            }
         }
         else if(!right && !left)
         {
@@ -104,4 +93,6 @@ public class Player : MonoBehaviour {
         }
 
     }
+
+
 }
