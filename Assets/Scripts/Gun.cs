@@ -11,6 +11,7 @@ public class Gun : MonoBehaviour {
     public Transform middle;
     public Transform rightShoulder;
     public Transform rightHand;
+    Vector2 radius;
     bool facingRight = true;
     float hyp;
     float leg;
@@ -72,11 +73,13 @@ public class Gun : MonoBehaviour {
 
         //Right Arm
         hyp = Mathf.Abs((rightHand.position - rightShoulder.position).magnitude);
+        radius = rightHand.position - rightShoulder.position;
         w = rightHand.position.x - rightShoulder.position.x;
         h = rightHand.position.y - rightShoulder.position.y;
 
-        angleRight = Mathf.Atan(h / w);
-        angleRight = (180 * angleRight / Mathf.PI) + 90;
+        //angleRight = Mathf.Atan(Mathf.Abs(h) / Mathf.Abs(w));
+        //angleRight = (180 * angleRight / Mathf.PI);
+        angleRight = Vector2.Angle(radius, new Vector2(0, -1));
         Debug.Log(angleRight);
 
         rightArm.localRotation = Quaternion.Euler(transform.localRotation.x, transform.localRotation.y, angleRight);
