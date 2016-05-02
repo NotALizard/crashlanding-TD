@@ -27,8 +27,8 @@ public class Player : MonoBehaviour {
 	void Start () {
         myBody2D = this.GetComponent<Rigidbody2D>();
         anim = this.GetComponent<Animator>();
-        footBL = transform.FindChild("footBL");
-        footTR = transform.FindChild("footTR");
+        footBL = transform.FindChild("FootBL");
+        footTR = transform.FindChild("FootTR");
 	}
 	
 	void Update () {
