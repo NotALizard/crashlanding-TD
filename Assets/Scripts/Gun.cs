@@ -47,7 +47,7 @@ public class Gun : MonoBehaviour {
         }
 
         angleLeft = Mathf.Atan(h / w);
-        angleLeft = 3 * (180 * angleLeft / Mathf.PI) / 4;
+        angleLeft = 4 * (180 * angleLeft / Mathf.PI) / 4;
 
 
         if ((h < 0 && facingRight) || (h > 0 && !facingRight))
@@ -80,8 +80,13 @@ public class Gun : MonoBehaviour {
         //angleRight = Mathf.Atan(Mathf.Abs(h) / Mathf.Abs(w));
         //angleRight = (180 * angleRight / Mathf.PI);
         angleRight = Vector2.Angle(radius, new Vector2(0, -1));
+        if ((facingRight && w < 0) || (!facingRight && w > 0))  //Fix for special case of pointing straight up or down when crosshair is really close to player
+            angleRight = 180 + (180 - angleRight);
         Debug.Log(angleRight);
 
-        rightArm.localRotation = Quaternion.Euler(transform.localRotation.x, transform.localRotation.y, angleRight);
+        rightArm.localRotation = Quaternion.Euler(transform.localRotation.x, transform.localRotation.y, angleRight + 3.64f);
+        hyp = Mathf.Abs((rightHand.position - rightShoulder.position).magnitude);
+        rightArm.localScale = new Vector3(1, hyp / rightLength, 1);
+
     }
 }
