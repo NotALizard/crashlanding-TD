@@ -12,23 +12,31 @@ public class Player : MonoBehaviour {
     //Constants
     public float jumpHeight = 4;
     float runSpeed = 5;
+    float fireDelay = 2;
+    int shots = 3;
+    int damage = 3;
+    float spread = 10;
 
     //Components
     Rigidbody2D myBody2D;
     Animator anim;
     public Transform footBL;
     public Transform footTR;
+    Gun gun;
 
     //Other
     bool canJump = true;
     int moveDirection;
     public LayerMask ground;
+    float fireTime = 0;
+
 
 	void Start () {
         myBody2D = this.GetComponent<Rigidbody2D>();
         anim = this.GetComponent<Animator>();
         footBL = transform.FindChild("FootBL");
         footTR = transform.FindChild("FootTR");
+        gun = transform.FindChild("LeftArm").FindChild("Gun").GetComponent<Gun>();
 	}
 	
 	void Update () {
@@ -43,6 +51,8 @@ public class Player : MonoBehaviour {
         jump = Input.GetKey(KeyCode.W);
         crouch = Input.GetKey(KeyCode.S);
         fire = Input.GetKey(KeyCode.Mouse0);
+
+
 
         //Walking
         if (left && !right)
@@ -90,6 +100,14 @@ public class Player : MonoBehaviour {
         else if (anim.GetBool("isCrouch"))
         {
             anim.SetBool("isCrouch", false);
+        }
+
+        //Shooting
+        if (fire && Time.time - fireTime > fireDelay)
+        {
+            fireTime = Time.time;
+            gun.Fire(shots, spread, damage);
+            
         }
 
     }
