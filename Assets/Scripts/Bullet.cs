@@ -7,6 +7,12 @@ public class Bullet : MonoBehaviour {
     public int damage;
     Rigidbody2D myRigidbody;
 
+    void OnTriggerEnter2D(Collider2D collider)
+    {
+        if (collider.CompareTag("ProjectileDestroy"))
+            Destroy(this.gameObject);
+    }
+
 	public void UpdateVelocity () {
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
         myRigidbody = GetComponent<Rigidbody2D>();

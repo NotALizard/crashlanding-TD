@@ -12,7 +12,7 @@ public class Player : MonoBehaviour {
     //Constants
     public float jumpHeight = 4;
     float runSpeed = 5;
-    float fireDelay = 2;
+    float fireDelay = 1;
     int shots = 3;
     int damage = 3;
     float spread = 10;
@@ -22,10 +22,13 @@ public class Player : MonoBehaviour {
     Animator anim;
     public Transform footBL;
     public Transform footTR;
+    Transform leftArm;
+    Transform rightArm;
     Gun gun;
 
     //Other
     bool canJump = true;
+    bool isCrouching = false;
     int moveDirection;
     public LayerMask ground;
     float fireTime = 0;
@@ -36,7 +39,9 @@ public class Player : MonoBehaviour {
         anim = this.GetComponent<Animator>();
         footBL = transform.FindChild("FootBL");
         footTR = transform.FindChild("FootTR");
-        gun = transform.FindChild("LeftArm").FindChild("Gun").GetComponent<Gun>();
+        leftArm = transform.FindChild("LeftArm");
+        rightArm = transform.FindChild("RightArm");
+        gun = leftArm.FindChild("Gun").GetComponent<Gun>();
 	}
 	
 	void Update () {
@@ -93,13 +98,20 @@ public class Player : MonoBehaviour {
         }
 
         //Crouching
-        if(crouch && canJump)
+        if(crouch && canJump && !isCrouching)
         {
             anim.SetBool("isCrouch", true);
+            isCrouching = true;
+            leftArm.localPosition = new Vector3(leftArm.localPosition.x, leftArm.localPosition.y - 0.04f, leftArm.localPosition.z);
+            rightArm.localPosition = new Vector3(rightArm.localPosition.x, rightArm.localPosition.y - 0.04f, rightArm.localPosition.z);
+
         }
-        else if (anim.GetBool("isCrouch"))
+        else if (!crouch && isCrouching)
         {
             anim.SetBool("isCrouch", false);
+            isCrouching = false;
+            leftArm.localPosition = new Vector3(leftArm.localPosition.x, leftArm.localPosition.y + 0.04f, leftArm.localPosition.z);
+            rightArm.localPosition = new Vector3(rightArm.localPosition.x, rightArm.localPosition.y + 0.04f, rightArm.localPosition.z);
         }
 
         //Shooting
