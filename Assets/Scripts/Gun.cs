@@ -14,6 +14,7 @@ public class Gun : MonoBehaviour {
     public Transform bulletSpawn;
     public Transform bulletLine;
     public GameObject bulletFab;
+    Player playerScript;
     Vector2 radius;
     bool facingRight = true;
     float hyp;
@@ -28,6 +29,7 @@ public class Gun : MonoBehaviour {
     void Start () {
         leg = Mathf.Abs((aim.position - pivot.position).magnitude);
         rightLength = Mathf.Abs((rightHand.position - rightShoulder.position).magnitude);
+        playerScript = player.GetComponent<Player>();
     }
 	
 	void Update () {
@@ -39,12 +41,12 @@ public class Gun : MonoBehaviour {
         //Turn the player if they are looking the wrong way
         if (w < 0 && facingRight)
         {
-            player.localRotation = Quaternion.Euler(0, 180, 0);
+            playerScript.Flip();
             facingRight = false;
         }
         if (w > 0 && !facingRight)
         {
-            player.localRotation = Quaternion.Euler(0, 0, 0);
+            playerScript.Flip();
             facingRight = true;
         }
 

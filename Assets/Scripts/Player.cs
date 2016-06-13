@@ -29,6 +29,7 @@ public class Player : MonoBehaviour {
     //Other
     bool canJump = true;
     bool isCrouching = false;
+    bool facingRight = true;
     int moveDirection;
     public LayerMask ground;
     float fireTime = 0;
@@ -79,6 +80,19 @@ public class Player : MonoBehaviour {
 
         myBody2D.velocity = new Vector3(moveDirection * runSpeed, myBody2D.velocity.y);
         anim.SetFloat("speed", Mathf.Abs(myBody2D.velocity.x));
+        //Determine whether the player is moving backwards and update the animator
+        if (moveDirection < 0 && facingRight)
+        {
+            anim.SetBool("movingBack", true);
+        }
+        else if (moveDirection > 0 && !facingRight)
+        {
+            anim.SetBool("movingBack", true);
+        }
+        else
+        {
+            anim.SetBool("movingBack", false);
+        }
 
         //Jumping
         if (Physics2D.OverlapArea(footTR.position, footBL.position, ground) && myBody2D.velocity.y < 0.01)
@@ -122,6 +136,23 @@ public class Player : MonoBehaviour {
             
         }
 
+    }
+
+    //Flip the player along the y axis (horizontally)
+    public void Flip()
+    {
+        if (facingRight)
+        {
+            transform.rotation = Quaternion.Euler(0, 180, 0);
+            Debug.Log("flipped");
+            facingRight = false;
+        }
+        else if (!facingRight)
+        {
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+            Debug.Log("flipped");
+            facingRight = true;
+        }
     }
 
 
