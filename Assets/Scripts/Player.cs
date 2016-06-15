@@ -14,7 +14,7 @@ public class Player : MonoBehaviour {
     float runSpeed = 5;
     float fireDelay = 1;
     int shots = 3;
-    int damage = 3;
+    int damage = 4;
     float spread = 10;
 
     //Components

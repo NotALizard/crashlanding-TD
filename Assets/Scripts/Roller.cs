@@ -26,5 +26,6 @@ public class Roller : Enemy {
         if ((moveDirection > 0 && !facingRight) || (moveDirection < 0 && facingRight))
             Flip();
 
+        Debug.Log(health);
 	}
 }

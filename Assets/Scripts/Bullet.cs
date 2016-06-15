@@ -11,6 +11,8 @@ public class Bullet : MonoBehaviour {
     {
         if (collider.CompareTag("ProjectileDestroy"))
             Destroy(this.gameObject);
+        else if (collider.CompareTag("Enemy"))
+            Attack(collider.GetComponent<Enemy>());
     }
 
 	public void UpdateVelocity () {
@@ -18,6 +20,12 @@ public class Bullet : MonoBehaviour {
         myRigidbody = GetComponent<Rigidbody2D>();
         myRigidbody.velocity = new Vector2(speed * Mathf.Cos(Mathf.Deg2Rad * angle), speed * Mathf.Sin(Mathf.Deg2Rad * angle));
 	}
+
+    private void Attack(Enemy enemy)
+    {
+        enemy.Hurt(damage);
+        Destroy(this.gameObject);
+    }
 
     public void SetDamage(int dam)
     {
@@ -33,4 +41,6 @@ public class Bullet : MonoBehaviour {
     {
         return damage;
     }
+
+    
 }

@@ -28,7 +28,7 @@ public class Enemy : MonoBehaviour {
 
     private void Kill()
     {
-        //todo
+        Destroy(this.gameObject);
     }
 
     public void Flip()
