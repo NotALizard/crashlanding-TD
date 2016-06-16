@@ -8,6 +8,7 @@ public class Player : MonoBehaviour {
     bool jump;
     bool crouch;
     bool fire;
+    bool build;
 
     //Constants
     public float jumpHeight = 4;
@@ -57,29 +58,36 @@ public class Player : MonoBehaviour {
         jump = Input.GetKey(KeyCode.W);
         crouch = Input.GetKey(KeyCode.S);
         fire = Input.GetKey(KeyCode.Mouse0);
+        build = Input.GetKey(KeyCode.Space);
 
 
 
         //Walking
-        if (left && !right)
+        if (!build)
         {
-            moveDirection = -1;
+            if (left && !right)
+            {
+                moveDirection = -1;
+            }
+            else if (right && !left)
+            {
+                moveDirection = 1;
+            }
+            else if (!right && !left)
+            {
+                moveDirection = 0;
+            }
+            if (crouch)
+            {
+                moveDirection = 0;
+            }
+            myBody2D.velocity = new Vector2(moveDirection * runSpeed, myBody2D.velocity.y);
         }
-        else if(right && !left)
-        {
-            moveDirection = 1;
-        }
-        else if(!right && !left)
-        {
-            moveDirection = 0;
-        }
-        if (crouch)
-        {
-            moveDirection = 0;
-        }
+        else
+            myBody2D.velocity = new Vector2(0, myBody2D.velocity.y);
 
-        myBody2D.velocity = new Vector3(moveDirection * runSpeed, myBody2D.velocity.y);
         anim.SetFloat("speed", Mathf.Abs(myBody2D.velocity.x));
+
         //Determine whether the player is moving backwards and update the animator
         if (moveDirection < 0 && facingRight)
         {
@@ -104,7 +112,7 @@ public class Player : MonoBehaviour {
             canJump = true;
         }
 
-        if (canJump && jump)
+        if (canJump && jump && !build)
         {
             anim.SetBool("jump", true);
             myBody2D.velocity = new Vector3(myBody2D.velocity.x, jumpHeight);
@@ -112,7 +120,7 @@ public class Player : MonoBehaviour {
         }
 
         //Crouching
-        if(crouch && canJump && !isCrouching)
+        if(crouch && canJump && !isCrouching && !build)
         {
             anim.SetBool("isCrouch", true);
             isCrouching = true;
@@ -120,7 +128,7 @@ public class Player : MonoBehaviour {
             rightArm.localPosition = new Vector3(rightArm.localPosition.x, rightArm.localPosition.y - 0.04f, rightArm.localPosition.z);
 
         }
-        else if (!crouch && isCrouching)
+        else if ((!crouch || build) && isCrouching)
         {
             anim.SetBool("isCrouch", false);
             isCrouching = false;
