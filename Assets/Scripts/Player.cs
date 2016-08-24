@@ -35,9 +35,15 @@ public class Player : MonoBehaviour {
     int moveDirection;
     public LayerMask ground;
     float fireTime = 0;
+
+    //Upgrade Selection
     Building selectedBuilding;
     float startBuildTime;
     float doneBuildTime = 2;
+    bool buildingLeft;
+    bool buildingUp;
+    bool buildingRight;
+    bool selling;
 
     //Status
     float health;
@@ -101,20 +107,20 @@ public class Player : MonoBehaviour {
             myBody2D.velocity = new Vector2(0, myBody2D.velocity.y);
             selectedBuilding = buildingDetector.GetSelection();
 
-            startBuildTime = Time.time;
             if(selectedBuilding != null)
             {
                 if(left && !(right || jump || crouch) && selectedBuilding.leftOpt != null)
                 {
-
-                    while(left && !(right || jump || crouch))
+                    if (!buildingLeft)
                     {
-                        if(Time.time - startBuildTime >= doneBuildTime)
-                        {
-                            money -= selectedBuilding.leftOpt(selectedBuilding);
-                        }
+                        startBuildTime = Time.time;
+                        buildingLeft = true;
                     }
-                    money -= selectedBuilding.leftOpt(selectedBuilding);
+                    else if (Time.time - startBuildTime >= doneBuildTime)
+                    {
+                        money -= selectedBuilding.leftOpt(selectedBuilding);
+                        buildingLeft = false;
+                    }
                 }
                 else if(jump && !(left || right || crouch) && selectedBuilding.topOpt != null)
                 {
