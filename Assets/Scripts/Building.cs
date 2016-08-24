@@ -2,8 +2,9 @@
 using System.Collections;
 
 public class Building : MonoBehaviour {
-    protected float maxHealth;
-    protected float health;
+
+    //Components
+    Animator anim;
 
     //Upgrades
     public delegate int BuildDel(Building b);
@@ -12,13 +13,23 @@ public class Building : MonoBehaviour {
     public BuildDel rightOpt;
     public BuildDel sellOpt;
 
-
-
+    //Status
+    protected float maxHealth;
+    protected float health;
     private int[] upgradeCosts = new int[4];
 
-    public void Init(float maxHP, string sprite)
+    void Start()
     {
+        anim = gameObject.GetComponent<Animator>();
+        Builder.Ghost(this);
+    }
 
+
+    public void Init(float maxHP, int sprite)
+    {
+        maxHealth = maxHP;
+        health = maxHealth;
+        anim.SetInteger("id", sprite);
     }
 
     public void Hurt(float dam)
@@ -39,7 +50,5 @@ public class Building : MonoBehaviour {
     }
 
     public int[] GetCosts() { return upgradeCosts; }
-
-    
 
 }

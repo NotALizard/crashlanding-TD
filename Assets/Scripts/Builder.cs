@@ -3,10 +3,10 @@ using System.Collections;
 
 public class Builder : MonoBehaviour {
 
-    //#### CONSTANTS - BUILDING COSTS ####
+    //CONSTANTS - BUILDING COSTS
     const int ScaffoldCost = 20;
-    const int BasicWallCost = 100;
     const int BasicTurretCost = 100;
+    const int BasicWallCost = 100;
     const int BasicGenCost = 100;
     const int RapidTurretCost = 150;
     const int MortarTurretCost = 175;
@@ -17,37 +17,192 @@ public class Builder : MonoBehaviour {
     const int NecroGenCost = 150;
     const int RepairGenCost = 175;
     const int BuffGenCost = 200;
-    //#####################################
+    //BUILDING HEALTH
+    const int BasicWallHealth = 300;
+    const int BasicTurretHealth = 100;
+    const int BasicGenHealth = 75;
+    const int RapidTurretHealth = 150;
+    const int MortarTurretHealth = 150;
+    const int LaserTurretHealth = 150;
+    const int HeavyWallHealth = 750;
+    const int ReflectWallHealth = 450;
+    const int RefractWallHealth = 300;
+    const int NecroGenHealth = 200;
+    const int RepairGenHealth = 100;
+    const int BuffGenHealth = 150;
+    //SPRITE ID
+    const int GhostSprite = 0;
+    const int ScaffoldSprite = 1;
+    const int BasicTurretSprite = 3;
+    const int RapidTurretSprite = 4;
+    const int MortarTurretSprite = 5;
+    const int LaserTurretSprite = 6;
+    const int BasicWallSprite = 7;
+    const int HeavyWallSprite = 8;
+    const int ReflectWallSprite = 9;
+    const int RefractWallSprite = 10;
+    const int BasicGenSprite = 11;
+    const int NecroGenSprite = 12;
+    const int RepairGenSprite = 13;
+    const int BuffGenSprite = 14;
 
 
-
+    public static int Ghost(Building b)
+    {
+        b.Init(Mathf.Infinity, GhostSprite);
+        b.leftOpt = null;
+        b.topOpt = Scaffold;
+        b.rightOpt = null;
+        b.sellOpt = null;
+        b.gameObject.tag = "Scaffold";
+        return (0);
+    }
 
     public static int Scaffold(Building b)
     {
-        b.Init(Mathf.Infinity, "scaffold");
-        b.leftOpt = BasicGun;
+        b.Init(Mathf.Infinity, ScaffoldSprite);
+        b.leftOpt = BasicTurret;
         b.topOpt = BasicGen;
         b.rightOpt = BasicWall;
         b.sellOpt = null;
         b.gameObject.tag = "Scaffold";
-
         return (ScaffoldCost);
     }
 
-    public static int BasicWall(Building b)
+    public static int BasicTurret(Building b)
     {
-
-
-    }
-
-    public static int BasicGun(Building b)
-    {
-
+        b.Init(BasicTurretHealth, BasicTurretSprite);
+        b.leftOpt = RapidTurret;
+        b.topOpt = MortarTurret;
+        b.rightOpt = LaserTurret;
+        b.sellOpt = Scaffold;
+        b.gameObject.tag = "Building";
+        return (BasicTurretCost);
     }
 
     public static int BasicGen(Building b)
     {
+        b.Init(BasicGenHealth, BasicGenSprite);
+        b.leftOpt = NecroGen;
+        b.topOpt = RepairGen;
+        b.rightOpt = BuffGen;
+        b.sellOpt = Scaffold;
+        b.gameObject.tag = "Building";
+        return (BasicGenCost);
 
     }
-    
+
+    public static int BasicWall(Building b)
+    {
+        b.Init(BasicWallHealth, BasicWallSprite);
+        b.leftOpt = HeavyWall;
+        b.topOpt = ReflectWall;
+        b.rightOpt = RefractWall;
+        b.sellOpt = Scaffold;
+        b.gameObject.tag = "Building";
+        return (BasicWallCost);
+
+    }
+
+    public static int RapidTurret(Building b)
+    {
+        b.Init(RapidTurretHealth, RapidTurretSprite);
+        b.leftOpt = null;
+        b.topOpt = null;
+        b.rightOpt = null;
+        b.sellOpt = BasicTurret;
+        b.gameObject.tag = "Building";
+        return (RapidTurretCost);
+    }
+
+    public static int MortarTurret(Building b)
+    {
+        b.Init(MortarTurretHealth, MortarTurretSprite);
+        b.leftOpt = null;
+        b.topOpt = null;
+        b.rightOpt = null;
+        b.sellOpt = BasicTurret;
+        b.gameObject.tag = "Building";
+        return (MortarTurretCost);
+    }
+
+    public static int LaserTurret(Building b)
+    {
+        b.Init(LaserTurretHealth, LaserTurretSprite);
+        b.leftOpt = null;
+        b.topOpt = null;
+        b.rightOpt = null;
+        b.sellOpt = BasicTurret;
+        b.gameObject.tag = "Building";
+        return (LaserTurretCost);
+    }
+
+    public static int NecroGen(Building b)
+    {
+        b.Init(BasicTurretHealth, NecroGenSprite);
+        b.leftOpt = null;
+        b.topOpt = null;
+        b.rightOpt = null;
+        b.sellOpt = BasicGen;
+        b.gameObject.tag = "Building";
+        return (NecroGenCost);
+    }
+
+    public static int RepairGen(Building b)
+    {
+        b.Init(BasicTurretHealth, RepairGenSprite);
+        b.leftOpt = null;
+        b.topOpt = null;
+        b.rightOpt = null;
+        b.sellOpt = BasicGen;
+        b.gameObject.tag = "Building";
+        return (RepairGenCost);
+    }
+
+    public static int BuffGen(Building b)
+    {
+        b.Init(BasicTurretHealth, BuffGenSprite);
+        b.leftOpt = null;
+        b.topOpt = null;
+        b.rightOpt = null;
+        b.sellOpt = BasicGen;
+        b.gameObject.tag = "Building";
+        return (BuffGenCost);
+    }
+
+    public static int HeavyWall(Building b)
+    {
+        b.Init(BasicTurretHealth, HeavyWallSprite);
+        b.leftOpt = null;
+        b.topOpt = null;
+        b.rightOpt = null;
+        b.sellOpt = BasicWall;
+        b.gameObject.tag = "Building";
+        return (HeavyWallCost);
+    }
+
+    public static int ReflectWall(Building b)
+    {
+        b.Init(BasicTurretHealth, ReflectWallSprite);
+        b.leftOpt = null;
+        b.topOpt = null;
+        b.rightOpt = null;
+        b.sellOpt = BasicWall;
+        b.gameObject.tag = "Building";
+        return (ReflectWallCost);
+    }
+
+    public static int RefractWall(Building b)
+    {
+        b.Init(BasicTurretHealth, RefractWallSprite);
+        b.leftOpt = null;
+        b.topOpt = null;
+        b.rightOpt = null;
+        b.sellOpt = BasicWall;
+        b.gameObject.tag = "Building";
+        return (RefractWallCost);
+    }
+
+
+
 }

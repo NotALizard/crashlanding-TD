@@ -26,6 +26,7 @@ public class Player : MonoBehaviour {
     Transform leftArm;
     Transform rightArm;
     Gun gun;
+    Detector buildingDetector;
 
     //Other
     bool canJump = true;
@@ -34,6 +35,13 @@ public class Player : MonoBehaviour {
     int moveDirection;
     public LayerMask ground;
     float fireTime = 0;
+    Building selectedBuilding;
+
+    //Status
+    float health;
+    float maxHealth;
+    public int money = 10000;
+
 
 
 	void Start () {
@@ -44,6 +52,7 @@ public class Player : MonoBehaviour {
         leftArm = transform.FindChild("LeftArm");
         rightArm = transform.FindChild("RightArm");
         gun = leftArm.FindChild("Gun").GetComponent<Gun>();
+        buildingDetector = transform.FindChild("Detector").GetComponent<Detector>();
 	}
 	
 	void Update () {
@@ -84,7 +93,30 @@ public class Player : MonoBehaviour {
             myBody2D.velocity = new Vector2(moveDirection * runSpeed, myBody2D.velocity.y);
         }
         else
+        {
             myBody2D.velocity = new Vector2(0, myBody2D.velocity.y);
+            selectedBuilding = buildingDetector.GetSelection();
+            if(selectedBuilding != null)
+            {
+                if(left && !(right || jump || crouch) && selectedBuilding.leftOpt != null)
+                {
+                    money -= selectedBuilding.leftOpt(selectedBuilding);
+                }
+                else if(jump && !(left || right || crouch) && selectedBuilding.topOpt != null)
+                {
+                    money -= selectedBuilding.topOpt(selectedBuilding);
+                }
+                else if(right && !(left || jump || crouch) && selectedBuilding.rightOpt != null)
+                {
+                    money -= selectedBuilding.rightOpt(selectedBuilding);
+                }
+                else if(crouch && !(left || right || jump) && selectedBuilding.sellOpt != null)
+                {
+                    money += selectedBuilding.sellOpt(selectedBuilding);
+                }
+            }
+
+        }
 
         anim.SetFloat("speed", Mathf.Abs(myBody2D.velocity.x));
 
