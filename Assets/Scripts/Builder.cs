@@ -17,6 +17,7 @@ public class Builder : MonoBehaviour {
     const int NecroGenCost = 150;
     const int RepairGenCost = 175;
     const int BuffGenCost = 200;
+    const float RefundRatio = 3 / 5;
     //BUILDING HEALTH
     const int BasicWallHealth = 300;
     const int BasicTurretHealth = 100;
@@ -50,6 +51,7 @@ public class Builder : MonoBehaviour {
     public static int Ghost(Building b)
     {
         b.Init(Mathf.Infinity, GhostSprite);
+        b.SetCosts(0, ScaffoldCost, 0, 0);
         b.leftOpt = null;
         b.topOpt = Scaffold;
         b.rightOpt = null;
@@ -61,6 +63,7 @@ public class Builder : MonoBehaviour {
     public static int Scaffold(Building b)
     {
         b.Init(Mathf.Infinity, ScaffoldSprite);
+        b.SetCosts(BasicTurretCost, BasicGenCost, BasicWallCost, 0);
         b.leftOpt = BasicTurret;
         b.topOpt = BasicGen;
         b.rightOpt = BasicWall;
@@ -72,6 +75,7 @@ public class Builder : MonoBehaviour {
     public static int BasicTurret(Building b)
     {
         b.Init(BasicTurretHealth, BasicTurretSprite);
+        b.SetCosts(RapidTurretCost, MortarTurretCost, LaserTurretCost, (int)(BasicTurretCost * RefundRatio));
         b.leftOpt = RapidTurret;
         b.topOpt = MortarTurret;
         b.rightOpt = LaserTurret;
@@ -83,6 +87,7 @@ public class Builder : MonoBehaviour {
     public static int BasicGen(Building b)
     {
         b.Init(BasicGenHealth, BasicGenSprite);
+        b.SetCosts(NecroGenCost, RepairGenCost, BuffGenCost, (int)(BasicGenCost * RefundRatio));
         b.leftOpt = NecroGen;
         b.topOpt = RepairGen;
         b.rightOpt = BuffGen;
@@ -95,6 +100,7 @@ public class Builder : MonoBehaviour {
     public static int BasicWall(Building b)
     {
         b.Init(BasicWallHealth, BasicWallSprite);
+        b.SetCosts(HeavyWallCost, ReflectWallCost, RefractWallCost, (int)(BasicWallCost * RefundRatio));
         b.leftOpt = HeavyWall;
         b.topOpt = ReflectWall;
         b.rightOpt = RefractWall;
@@ -107,6 +113,7 @@ public class Builder : MonoBehaviour {
     public static int RapidTurret(Building b)
     {
         b.Init(RapidTurretHealth, RapidTurretSprite);
+        b.SetCosts(0, 0, 0, (int)(RapidTurretCost * RefundRatio));
         b.leftOpt = null;
         b.topOpt = null;
         b.rightOpt = null;
@@ -118,6 +125,7 @@ public class Builder : MonoBehaviour {
     public static int MortarTurret(Building b)
     {
         b.Init(MortarTurretHealth, MortarTurretSprite);
+        b.SetCosts(0, 0, 0, (int)(MortarTurretCost * RefundRatio));
         b.leftOpt = null;
         b.topOpt = null;
         b.rightOpt = null;
@@ -129,6 +137,7 @@ public class Builder : MonoBehaviour {
     public static int LaserTurret(Building b)
     {
         b.Init(LaserTurretHealth, LaserTurretSprite);
+        b.SetCosts(0, 0, 0, (int)(LaserTurretCost * RefundRatio));
         b.leftOpt = null;
         b.topOpt = null;
         b.rightOpt = null;
@@ -140,6 +149,7 @@ public class Builder : MonoBehaviour {
     public static int NecroGen(Building b)
     {
         b.Init(BasicTurretHealth, NecroGenSprite);
+        b.SetCosts(0, 0, 0, (int)(NecroGenCost * RefundRatio));
         b.leftOpt = null;
         b.topOpt = null;
         b.rightOpt = null;
@@ -151,6 +161,7 @@ public class Builder : MonoBehaviour {
     public static int RepairGen(Building b)
     {
         b.Init(BasicTurretHealth, RepairGenSprite);
+        b.SetCosts(0, 0, 0, (int)(RepairGenCost * RefundRatio));
         b.leftOpt = null;
         b.topOpt = null;
         b.rightOpt = null;
@@ -162,6 +173,7 @@ public class Builder : MonoBehaviour {
     public static int BuffGen(Building b)
     {
         b.Init(BasicTurretHealth, BuffGenSprite);
+        b.SetCosts(0, 0, 0, (int)(BuffGenCost * RefundRatio));
         b.leftOpt = null;
         b.topOpt = null;
         b.rightOpt = null;
@@ -173,6 +185,7 @@ public class Builder : MonoBehaviour {
     public static int HeavyWall(Building b)
     {
         b.Init(BasicTurretHealth, HeavyWallSprite);
+        b.SetCosts(0, 0, 0, (int)(HeavyWallCost * RefundRatio));
         b.leftOpt = null;
         b.topOpt = null;
         b.rightOpt = null;
@@ -184,6 +197,7 @@ public class Builder : MonoBehaviour {
     public static int ReflectWall(Building b)
     {
         b.Init(BasicTurretHealth, ReflectWallSprite);
+        b.SetCosts(0, 0, 0, (int)(ReflectWallCost * RefundRatio));
         b.leftOpt = null;
         b.topOpt = null;
         b.rightOpt = null;
@@ -195,6 +209,7 @@ public class Builder : MonoBehaviour {
     public static int RefractWall(Building b)
     {
         b.Init(BasicTurretHealth, RefractWallSprite);
+        b.SetCosts(0, 0, 0, (int)(RefractWallCost * RefundRatio));
         b.leftOpt = null;
         b.topOpt = null;
         b.rightOpt = null;

@@ -36,12 +36,7 @@ public class Building : MonoBehaviour {
     {
         health = health - dam;
         if (health <= 0)
-            Kill();
-    }
-
-    private void Kill()
-    {
-        sellOpt(this);
+            sellOpt(this);
     }
 
     public void SetCosts(int left, int top, int right, int sell)
@@ -50,5 +45,7 @@ public class Building : MonoBehaviour {
     }
 
     public int[] GetCosts() { return upgradeCosts; }
+
+    public int Refund() { return upgradeCosts[3]; }
 
 }
