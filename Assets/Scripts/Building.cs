@@ -12,11 +12,14 @@ public class Building : MonoBehaviour {
     public BuildDel topOpt;
     public BuildDel rightOpt;
     public BuildDel sellOpt;
+    private int[] upgradeCosts = new int[4];
+    private int[] upgradeIcons = new int[4];
+    private int[] minTechLevels = new int[3];
 
     //Status
     protected float maxHealth;
     protected float health;
-    private int[] upgradeCosts = new int[4];
+
 
     void Start()
     {
@@ -39,12 +42,26 @@ public class Building : MonoBehaviour {
             sellOpt(this);
     }
 
-    public void SetCosts(int left, int top, int right, int sell)
+    public void SetCosts(int left, int top, int right, int bottom)
     {
-        upgradeCosts = new int[4]{left, top, right, sell};
+        upgradeCosts = new int[4]{left, top, right, bottom};
     }
 
     public int[] GetCosts() { return upgradeCosts; }
+
+    public void SetIcons(int left, int top, int right, int bottom)
+    {
+        upgradeIcons = new int[4] { left, top, right, bottom};
+    }
+
+    public int[] GetIcons() { return upgradeIcons; }
+
+    public void SetTechLevels(int left, int top, int right)
+    {
+        minTechLevels = new int[3] { left, top, right};
+    }
+
+    public int[] GetTechLevels() { return minTechLevels; }
 
     public int Refund() { return upgradeCosts[3]; }
 

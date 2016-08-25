@@ -97,7 +97,6 @@ public class Gun : MonoBehaviour {
         float tempAngle = Vector2.Angle(new Vector2(bulletSpawn.position.x - bulletLine.position.x, bulletSpawn.position.y - bulletLine.position.y), new Vector2(1, 0));
         if (bulletSpawn.position.y < bulletLine.position.y)
             tempAngle = 360 - tempAngle;
-        Debug.Log(tempAngle);
         for (int i = 0; i < num; i++)
         {
             script = ((GameObject)Instantiate(bulletFab, bulletSpawn.position, transform.rotation)).GetComponent<Bullet>();

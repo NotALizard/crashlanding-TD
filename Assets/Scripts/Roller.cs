@@ -25,7 +25,5 @@ public class Roller : Enemy {
         myBody2D.velocity = new Vector2(moveDirection * speed, myBody2D.velocity.y);
         if ((moveDirection > 0 && !facingRight) || (moveDirection < 0 && facingRight))
             Flip();
-
-        Debug.Log(health);
 	}
 }

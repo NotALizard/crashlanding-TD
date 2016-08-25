@@ -27,6 +27,7 @@ public class Player : MonoBehaviour {
     Transform rightArm;
     Gun gun;
     Detector buildingDetector;
+    ShopUI shop;
 
     //Other
     bool canJump = true;
@@ -39,16 +40,18 @@ public class Player : MonoBehaviour {
     //Upgrade Selection
     Building selectedBuilding;
     float startBuildTime;
-    float doneBuildTime = 2;
+    float doneBuildTime = 1;
     bool buildingLeft;
-    bool buildingUp;
+    bool buildingTop;
     bool buildingRight;
     bool selling;
+    bool shopIsActive;
 
     //Status
     float health;
     float maxHealth;
     public int money = 10000;
+    private int techLevel = 5;
 
 
 
@@ -61,10 +64,7 @@ public class Player : MonoBehaviour {
         rightArm = transform.FindChild("RightArm");
         gun = leftArm.FindChild("Gun").GetComponent<Gun>();
         buildingDetector = transform.FindChild("Detector").GetComponent<Detector>();
-	}
-	
-	void Update () {
-	
+        shop = transform.FindChild("Shop").GetComponent<ShopUI>();
 	}
 
     void FixedUpdate()
@@ -79,9 +79,17 @@ public class Player : MonoBehaviour {
 
 
 
-        //Walking
+        //Actions that can be done while not building
         if (!build)
         {
+            //If the shop is still on, hide it
+            if (shopIsActive)
+            {
+                shop.Sleep();
+                shopIsActive = false;
+            }
+
+            //Walking
             if (left && !right)
             {
                 moveDirection = -1;
@@ -99,17 +107,62 @@ public class Player : MonoBehaviour {
                 moveDirection = 0;
             }
             myBody2D.velocity = new Vector2(moveDirection * runSpeed, myBody2D.velocity.y);
+
+            //Jumping
+            if (Physics2D.OverlapArea(footTR.position, footBL.position, ground) && myBody2D.velocity.y < 0.01)
+            {
+                if (anim.GetBool("jump"))
+                {
+                    anim.SetBool("jump", false);
+                }
+                canJump = true;
+            }
+
+            if (canJump && jump && !build)
+            {
+                anim.SetBool("jump", true);
+                myBody2D.velocity = new Vector3(myBody2D.velocity.x, jumpHeight);
+                canJump = false;
+            }
+
+            //Crouching
+            if (crouch && canJump && !isCrouching && !build)
+            {
+                anim.SetBool("isCrouch", true);
+                isCrouching = true;
+                leftArm.localPosition = new Vector3(leftArm.localPosition.x, leftArm.localPosition.y - 0.04f, leftArm.localPosition.z);
+                rightArm.localPosition = new Vector3(rightArm.localPosition.x, rightArm.localPosition.y - 0.04f, rightArm.localPosition.z);
+
+            }
+            else if ((!crouch || build) && isCrouching)
+            {
+                anim.SetBool("isCrouch", false);
+                isCrouching = false;
+                leftArm.localPosition = new Vector3(leftArm.localPosition.x, leftArm.localPosition.y + 0.04f, leftArm.localPosition.z);
+                rightArm.localPosition = new Vector3(rightArm.localPosition.x, rightArm.localPosition.y + 0.04f, rightArm.localPosition.z);
+            }
         }
-        //Building
+
+
+        //Actions related to building and upgrading
         else
         {
             //Prevent movement so that the player can make their selection
             myBody2D.velocity = new Vector2(0, myBody2D.velocity.y);
             selectedBuilding = buildingDetector.GetSelection();
 
+            //Make sure they have a building selected
             if(selectedBuilding != null)
             {
-                if(left && !(right || jump || crouch) && selectedBuilding.leftOpt != null)
+                //Bring up the shop UI
+                if (!shopIsActive)
+                {
+                    shop.DisplayShop(selectedBuilding.GetCosts(), selectedBuilding.GetIcons(), selectedBuilding.GetTechLevels());
+                    shopIsActive = true;
+                }
+
+                //Choosing left option
+                if (left && !(right || jump || crouch) && selectedBuilding.leftOpt != null)
                 {
                     if (!buildingLeft)
                     {
@@ -120,25 +173,80 @@ public class Player : MonoBehaviour {
                     {
                         money -= selectedBuilding.leftOpt(selectedBuilding);
                         buildingLeft = false;
+                        shop.DisplayShop(selectedBuilding.GetCosts(), selectedBuilding.GetIcons(), selectedBuilding.GetTechLevels());
                     }
                 }
-                else if(jump && !(left || right || crouch) && selectedBuilding.topOpt != null)
+                else if (buildingLeft)
                 {
-                    money -= selectedBuilding.topOpt(selectedBuilding);
+                    buildingLeft = false;
+                    shop.SetProgress(0, false, false, false, false);
                 }
-                else if(right && !(left || jump || crouch) && selectedBuilding.rightOpt != null)
+                //Top option
+                if(jump && !(left || right || crouch) && selectedBuilding.topOpt != null)
                 {
-                    money -= selectedBuilding.rightOpt(selectedBuilding);
+                    if (!buildingTop)
+                    {
+                        startBuildTime = Time.time;
+                        buildingTop = true;
+                    }
+                    else if (Time.time - startBuildTime >= doneBuildTime)
+                    {
+                        money -= selectedBuilding.topOpt(selectedBuilding);
+                        buildingTop = false;
+                        shop.DisplayShop(selectedBuilding.GetCosts(), selectedBuilding.GetIcons(), selectedBuilding.GetTechLevels());
+                    }
                 }
-                else if(crouch && !(left || right || jump) && selectedBuilding.sellOpt != null)
+                else if (buildingTop)
                 {
-                    money += selectedBuilding.Refund();
-                    selectedBuilding.sellOpt(selectedBuilding);
+                    buildingTop = false;
+                    shop.SetProgress(0, false, false, false, false);
                 }
+                //Right option
+                if (right && !(left || jump || crouch) && selectedBuilding.rightOpt != null)
+                {
+                    if (!buildingRight)
+                    {
+                        startBuildTime = Time.time;
+                        buildingRight = true;
+                    }
+                    else if (Time.time - startBuildTime >= doneBuildTime)
+                    {
+                        money -= selectedBuilding.rightOpt(selectedBuilding);
+                        buildingRight = false;
+                        shop.DisplayShop(selectedBuilding.GetCosts(), selectedBuilding.GetIcons(), selectedBuilding.GetTechLevels());
+                    }
+                }
+                else if (buildingRight)
+                {
+                    buildingRight = false;
+                    shop.SetProgress(0, false, false, false, false);
+                }
+                //Sell option
+                if (crouch && !(left || right || jump) && selectedBuilding.sellOpt != null)
+                {
+                    if (!selling)
+                    {
+                        startBuildTime = Time.time;
+                        selling = true;
+                    }
+                    else if (Time.time - startBuildTime >= doneBuildTime)
+                    {
+                        money += selectedBuilding.Refund();
+                        selectedBuilding.sellOpt(selectedBuilding);
+                        selling = false;
+                        shop.DisplayShop(selectedBuilding.GetCosts(), selectedBuilding.GetIcons(), selectedBuilding.GetTechLevels());
+                    }
+                }
+                else if (selling)
+                {
+                    selling = false;
+                    shop.SetProgress(0, false, false, false, false);
+                }
+                shop.SetProgress((Time.time - startBuildTime) / doneBuildTime, buildingLeft, buildingTop, buildingRight, selling);
             }
-
         }
 
+        //Actions not affected by building
         anim.SetFloat("speed", Mathf.Abs(myBody2D.velocity.x));
 
         //Determine whether the player is moving backwards and update the animator
@@ -155,39 +263,7 @@ public class Player : MonoBehaviour {
             anim.SetBool("movingBack", false);
         }
 
-        //Jumping
-        if (Physics2D.OverlapArea(footTR.position, footBL.position, ground) && myBody2D.velocity.y < 0.01)
-        {
-            if (anim.GetBool("jump"))
-            {
-                anim.SetBool("jump", false);
-            }
-            canJump = true;
-        }
-
-        if (canJump && jump && !build)
-        {
-            anim.SetBool("jump", true);
-            myBody2D.velocity = new Vector3(myBody2D.velocity.x, jumpHeight);
-            canJump = false;
-        }
-
-        //Crouching
-        if(crouch && canJump && !isCrouching && !build)
-        {
-            anim.SetBool("isCrouch", true);
-            isCrouching = true;
-            leftArm.localPosition = new Vector3(leftArm.localPosition.x, leftArm.localPosition.y - 0.04f, leftArm.localPosition.z);
-            rightArm.localPosition = new Vector3(rightArm.localPosition.x, rightArm.localPosition.y - 0.04f, rightArm.localPosition.z);
-
-        }
-        else if ((!crouch || build) && isCrouching)
-        {
-            anim.SetBool("isCrouch", false);
-            isCrouching = false;
-            leftArm.localPosition = new Vector3(leftArm.localPosition.x, leftArm.localPosition.y + 0.04f, leftArm.localPosition.z);
-            rightArm.localPosition = new Vector3(rightArm.localPosition.x, rightArm.localPosition.y + 0.04f, rightArm.localPosition.z);
-        }
+        
 
         //Shooting
         if (fire && Time.time - fireTime > fireDelay)
@@ -205,16 +281,21 @@ public class Player : MonoBehaviour {
         if (facingRight)
         {
             transform.rotation = Quaternion.Euler(0, 180, 0);
-            Debug.Log("flipped");
             facingRight = false;
         }
         else if (!facingRight)
         {
             transform.rotation = Quaternion.Euler(0, 0, 0);
-            Debug.Log("flipped");
             facingRight = true;
         }
     }
+
+    public void IncreaseTechLevel()
+    {
+        techLevel += 1;
+    }
+
+    public int GetTechLevel() { return techLevel; }
 
 
 }
