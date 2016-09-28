@@ -11,6 +11,7 @@ public class Turret : MonoBehaviour {
     protected float inaccuracy;
     protected float lastShot;
     protected float fireDelay = 1;
+    protected float bulletSpeed = 15;
     protected GameObject target;
 
     public void Init(float delay, float inacc, float dam)
@@ -42,7 +43,7 @@ public class Turret : MonoBehaviour {
         if(Time.time - lastShot >= fireDelay && hasTarget)
         {
             GameObject projectile = (GameObject)GameObject.Instantiate(ammoFab, transform.FindChild("BulletPos").position, transform.localRotation);
-            projectile.GetComponent<Projectile>().Init(transform.eulerAngles.z, 10, 15);
+            projectile.GetComponent<Projectile>().Init(transform.eulerAngles.z, 10, bulletSpeed);
             lastShot = Time.time;
             return true;
         }
