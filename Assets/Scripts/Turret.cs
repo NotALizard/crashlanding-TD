@@ -6,19 +6,32 @@ public class Turret : MonoBehaviour {
 
     //Variables
     public GameObject ammoFab;
-    protected float maxRange = 25;
+    protected GameObject target;
+    protected float maxRange;
     protected float damage;
     protected float inaccuracy;
+    protected float fireDelay;
+    protected float bulletSpeed;
     protected float lastShot;
-    protected float fireDelay = 1;
-    protected float bulletSpeed = 15;
-    protected GameObject target;
 
-    public void Init(float delay, float inacc, float dam)
+    protected void Awake()
     {
+        Init(0, 0, 0, 0, 0);
+    }
+
+    public void Init(float delay, float inacc, float dam, float range, float spd)
+    {
+        /*maxRange = range;
+        fireDelay = delay;
+        bulletSpeed = spd;
         fireDelay = delay;
         inaccuracy = inacc;
-        damage = dam;
+        damage = dam;*/
+        maxRange = Constants.TurretBasicRange;
+        fireDelay = Constants.TurretBasicRate;
+        bulletSpeed = Constants.TurretBasicBulletSpd;
+        inaccuracy = Constants.TurretBasicInacc;
+        damage = Constants.TurretBasicDmg;
         lastShot = Time.time;
     }
 
