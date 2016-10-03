@@ -3,10 +3,9 @@ using System.Collections;
 
 public class Turret : MonoBehaviour {
 
-
-    //Variables
     public GameObject ammoFab;
     protected GameObject target;
+    protected Animator anim;
     protected float maxRange;
     protected float damage;
     protected float inaccuracy;
@@ -16,22 +15,31 @@ public class Turret : MonoBehaviour {
 
     protected void Awake()
     {
-        Init(0, 0, 0, 0, 0);
+        Init("basic");
     }
 
-    public void Init(float delay, float inacc, float dam, float range, float spd)
+    public void Init(string type)
     {
-        /*maxRange = range;
-        fireDelay = delay;
-        bulletSpeed = spd;
-        fireDelay = delay;
-        inaccuracy = inacc;
-        damage = dam;*/
-        maxRange = Constants.TurretBasicRange;
-        fireDelay = Constants.TurretBasicRate;
-        bulletSpeed = Constants.TurretBasicBulletSpd;
-        inaccuracy = Constants.TurretBasicInacc;
-        damage = Constants.TurretBasicDmg;
+        if (type.Equals("basic"))
+        {
+            maxRange = Constants.TurretBasicRange;
+            fireDelay = Constants.TurretBasicRate;
+            bulletSpeed = Constants.TurretBasicBulletSpd;
+            inaccuracy = Constants.TurretBasicInacc;
+            damage = Constants.TurretBasicDmg;
+        }
+        else if (type.Equals("rapid"))
+        {
+
+        }
+        else if (type.Equals("mortar"))
+        {
+            maxRange = Constants.TurretMortarRange;
+            fireDelay = Constants.TurretMortarRate;
+            bulletSpeed = Constants.TurretMortarBulletSpd;
+            inaccuracy = Constants.TurretMortarInacc;
+            damage = Constants.TurretMortarDmg;
+        }
         lastShot = Time.time;
     }
 
@@ -58,6 +66,10 @@ public class Turret : MonoBehaviour {
             GameObject projectile = (GameObject)GameObject.Instantiate(ammoFab, transform.FindChild("BulletPos").position, transform.localRotation);
             projectile.GetComponent<Projectile>().Init(transform.eulerAngles.z, 10, bulletSpeed);
             lastShot = Time.time;
+            if(anim != null)
+            {
+                anim.Play("firing");
+            }
             return true;
         }
         return false;

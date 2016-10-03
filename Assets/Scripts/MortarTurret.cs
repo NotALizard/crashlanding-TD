@@ -7,28 +7,16 @@ public class MortarTurret : Turret {
 
     new void Awake()
     {
-        Init(0, 0, 0, 0, 0);
-    }
-
-    new void Init(float delay, float inacc, float dam, float range, float spd)
-    {
-        /*maxRange = range;
-        fireDelay = delay;
-        bulletSpeed = spd;
-        fireDelay = delay;
-        inaccuracy = inacc;
-        damage = dam;*/
-        maxRange = Constants.TurretMortarRange;
-        fireDelay = Constants.TurretMortarRate;
-        bulletSpeed = Constants.TurretMortarBulletSpd;
-        inaccuracy = Constants.TurretMortarInacc;
-        damage = Constants.TurretMortarDmg;
-        lastShot = Time.time;
+        anim = this.gameObject.GetComponent<Animator>();
+        Init("mortar");
     }
 
     new void FixedUpdate()
     {
-        Fire(Aim(FindUrgentEnemy()));
+        if (Fire(Aim(FindUrgentEnemy())))
+        {
+
+        }
     }
 
     new bool Aim(GameObject enemy)
@@ -36,11 +24,17 @@ public class MortarTurret : Turret {
         if (enemy != null)
         {
             Vector2 enemyPos = enemy.transform.position;
-            float xDist = enemyPos.x - this.transform.position.x;
+            Rigidbody2D enemyBody = enemy.gameObject.GetComponent<Rigidbody2D>();
+            //First Calculation
+            float xDist = enemyPos.x - this.transform.position.x - 1;
             float yDist = enemyPos.y - this.transform.position.y;
-            float form = ((bulletSpeed * bulletSpeed) + Mathf.Sqrt(Mathf.Pow(bulletSpeed, 4) - gravScale * ((gravScale * Mathf.Abs(xDist * xDist)) + (2 * yDist * bulletSpeed * bulletSpeed)))) / (gravScale * Mathf.Abs(xDist));
-            Debug.Log(Mathf.Rad2Deg * Mathf.Atan(form));
-            transform.localRotation = Quaternion.Euler(0, 0, Mathf.Rad2Deg * Mathf.Atan(form));
+            float rad = Mathf.Atan(((bulletSpeed * bulletSpeed) + Mathf.Sqrt(Mathf.Pow(bulletSpeed, 4) - gravScale * ((gravScale * Mathf.Abs(xDist * xDist)) + (2 * yDist * bulletSpeed * bulletSpeed)))) / (gravScale * Mathf.Abs(xDist)));
+            //Second Calculation - Makes it easier to hit moving objects, placeholder until I can nail down the proper kinematics
+            float time = xDist / (bulletSpeed * Mathf.Cos(rad));
+            xDist = xDist + (time * enemyBody.velocity.x);
+            //Uses the angle from the first calc to approximate the time spent in air and adjusts for target velocity
+            rad = Mathf.Atan(((bulletSpeed * bulletSpeed) + Mathf.Sqrt(Mathf.Pow(bulletSpeed, 4) - gravScale * ((gravScale * Mathf.Abs(xDist * xDist)) + (2 * yDist * bulletSpeed * bulletSpeed)))) / (gravScale * Mathf.Abs(xDist)));
+            transform.localRotation = Quaternion.Euler(0, 0, Mathf.Rad2Deg * rad);
             return true;
         }
         return false;
