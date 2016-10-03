@@ -34,7 +34,6 @@ public class MortarTurret : Turret {
             xDist = xDist + (time * enemyBody.velocity.x);
             //Uses the angle from the first calc to approximate the time spent in air and adjusts for target velocity
             rad = Mathf.Atan(((bulletSpeed * bulletSpeed) + Mathf.Sqrt(Mathf.Pow(bulletSpeed, 4) - gravScale * ((gravScale * xDist * xDist) + (2 * yDist * bulletSpeed * bulletSpeed)))) / (gravScale * Mathf.Abs(xDist)));
-            Debug.Log(xDist);
             if (xDist >= 0)
                 transform.localRotation = Quaternion.Euler(0, 0, Mathf.Rad2Deg * rad);
             else

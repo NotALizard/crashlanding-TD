@@ -17,8 +17,9 @@ public class Building : MonoBehaviour {
     private int[] minTechLevels = new int[3];
 
     //Status
-    protected float maxHealth;
-    protected float health;
+    private float maxHealth;
+    private float health;
+    private GameObject activeObject;
 
 
     void Start()
@@ -64,5 +65,12 @@ public class Building : MonoBehaviour {
     public int[] GetTechLevels() { return minTechLevels; }
 
     public int Refund() { return upgradeCosts[3]; }
+
+    public GameObject GetActiveObj() { return activeObject; }
+    
+    public void SetActiveObj(GameObject obj)
+    {
+        activeObject = obj;
+    }
 
 }

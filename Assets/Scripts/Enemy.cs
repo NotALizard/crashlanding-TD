@@ -3,7 +3,8 @@ using System.Collections;
 
 public class Enemy : MonoBehaviour {
     protected float maxHealth;
-    protected float health;
+    //protected float health;
+    public float health;
     protected float damage;
     protected float speed;
     protected bool facingRight;

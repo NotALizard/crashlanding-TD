@@ -88,6 +88,7 @@ public class Builder : MonoBehaviour {
         b.rightOpt = LaserTurret;
         b.sellOpt = Scaffold;
         b.gameObject.tag = "Building";
+        SetActiveObj(b, (GameObject)Object.Instantiate(Constants.TurretBasicFab, b.transform.position, Quaternion.identity));
         return (BasicTurretCost);
     }
 
@@ -245,6 +246,16 @@ public class Builder : MonoBehaviour {
         b.sellOpt = BasicWall;
         b.gameObject.tag = "Building";
         return (RefractWallCost);
+    }
+
+    private static void SetActiveObj(Building b, GameObject gobj)
+    {
+        if (b.GetActiveObj() != null)
+        {
+            Destroy(b.GetActiveObj());
+        }
+        b.SetActiveObj(gobj);
+        gobj.transform.parent = b.transform;
     }
 
 

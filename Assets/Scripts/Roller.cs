@@ -18,10 +18,12 @@ public class Roller : Enemy {
 	
 	void FixedUpdate () {
         //Movement
-        if (player.position.x > transform.position.x)
+        if (player.position.x > transform.position.x + 1)
             moveDirection = 1;
-        else
+        else if (player.position.x < transform.position.x - 1)
             moveDirection = -1;
+        else
+            moveDirection = 0;
         myBody2D.velocity = new Vector2(moveDirection * speed, myBody2D.velocity.y);
         if ((moveDirection > 0 && !facingRight) || (moveDirection < 0 && facingRight))
             Flip();
