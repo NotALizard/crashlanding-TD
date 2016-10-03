@@ -11,11 +11,11 @@ public static class Constants{
     public const float TurretBasicRate = 1;
     public static GameObject TurretBasicProj = (GameObject)Resources.Load("Prefabs/BulletFab", typeof(GameObject));
     //Mortar Turret
-    public const float TurretMortarDmg = 20;
+    public const float TurretMortarDmg = 10;
     public const float TurretMortarBulletSpd = 20;
     public const float TurretMortarRange = 25;
     public const float TurretMortarInacc = 0;
-    public const float TurretMortarRate = 1;
+    public const float TurretMortarRate = 3;
     public static GameObject TurretMortarProj = (GameObject)Resources.Load("Prefabs/BombFab", typeof(GameObject));
 
     //Building Assets
