@@ -21,7 +21,6 @@ public class Bomb : Projectile
     private void Attack()
     {
         List<Collider2D> targets = splash.GetTargets();
-        Debug.Log(targets.Count);
         foreach (Collider2D t in targets)
         {
             float dist = Vector2.Distance(transform.position, t.transform.position);

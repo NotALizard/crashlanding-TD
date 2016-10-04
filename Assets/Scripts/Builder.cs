@@ -84,11 +84,12 @@ public class Builder : MonoBehaviour {
         b.SetIcons(RapidTurretSprite, MortarTurretSprite, LaserTurretSprite, SellSprite);
         b.SetTechLevels(1, 2, 3);
         b.leftOpt = RapidTurret;
-        b.topOpt = MortarTurret;
-        b.rightOpt = LaserTurret;
+        b.topOpt = LaserTurret;
+        b.rightOpt = MortarTurret;
         b.sellOpt = Scaffold;
         b.gameObject.tag = "Building";
         SetActiveObj(b, (GameObject)Object.Instantiate(Constants.TurretBasicFab, b.transform.position, Quaternion.identity));
+        b.GetActiveObj().GetComponent<Turret>().Init("basic");
         return (BasicTurretCost);
     }
 
@@ -133,6 +134,8 @@ public class Builder : MonoBehaviour {
         b.rightOpt = null;
         b.sellOpt = BasicTurret;
         b.gameObject.tag = "Building";
+        SetActiveObj(b, (GameObject)Object.Instantiate(Constants.TurretRapidFab, b.transform.position, Quaternion.identity));
+        b.GetActiveObj().GetComponent<Turret>().Init("rapid");
         return (RapidTurretCost);
     }
 
@@ -147,6 +150,8 @@ public class Builder : MonoBehaviour {
         b.rightOpt = null;
         b.sellOpt = BasicTurret;
         b.gameObject.tag = "Building";
+        SetActiveObj(b, (GameObject)Object.Instantiate(Constants.TurretMortarFab, b.transform.position, Quaternion.identity));
+        b.GetActiveObj().GetComponent<Turret>().Init("mortar");
         return (MortarTurretCost);
     }
 
@@ -161,6 +166,8 @@ public class Builder : MonoBehaviour {
         b.rightOpt = null;
         b.sellOpt = BasicTurret;
         b.gameObject.tag = "Building";
+        //SetActiveObj(b, (GameObject)Object.Instantiate(Constants.TurretLaserFab, b.transform.position, Quaternion.identity));
+        //b.GetActiveObj().GetComponent<Turret>().Init("laser");
         return (LaserTurretCost);
     }
 

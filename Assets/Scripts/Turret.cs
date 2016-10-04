@@ -12,11 +12,7 @@ public class Turret : MonoBehaviour {
     protected float fireDelay;
     protected float bulletSpeed;
     protected float lastShot;
-
-    protected void Awake()
-    {
-        Init("basic");
-    }
+    protected bool idling;
 
     public void Init(string type)
     {
@@ -30,7 +26,11 @@ public class Turret : MonoBehaviour {
         }
         else if (type.Equals("rapid"))
         {
-
+            maxRange = Constants.TurretRapidRange;
+            fireDelay = Constants.TurretRapidRate;
+            bulletSpeed = Constants.TurretRapidBulletSpd;
+            inaccuracy = Constants.TurretRapidInacc;
+            damage = Constants.TurretRapidDmg;
         }
         else if (type.Equals("mortar"))
         {
@@ -41,6 +41,7 @@ public class Turret : MonoBehaviour {
             damage = Constants.TurretMortarDmg;
         }
         lastShot = Time.time;
+        anim = gameObject.GetComponent<Animator>();
     }
 
     protected void FixedUpdate()
@@ -64,13 +65,20 @@ public class Turret : MonoBehaviour {
         if(Time.time - lastShot >= fireDelay && hasTarget)
         {
             GameObject projectile = (GameObject)GameObject.Instantiate(ammoFab, transform.FindChild("BulletPos").position, transform.localRotation);
-            projectile.GetComponent<Projectile>().Init(transform.eulerAngles.z, damage, bulletSpeed);
+            projectile.GetComponent<Projectile>().Init(transform.eulerAngles.z + Random.Range(0, inaccuracy) - (inaccuracy / 2), damage, bulletSpeed);
             lastShot = Time.time;
             if(anim != null)
             {
-                anim.Play("firing");
+                anim.SetBool("idle", false);
+                idling = false;
+                anim.Play("fire");
             }
             return true;
+        }
+        if (anim != null && !hasTarget && !idling)
+        {
+            idling = true;
+            anim.SetBool("idle", true);
         }
         return false;
     }
@@ -90,8 +98,5 @@ public class Turret : MonoBehaviour {
             }
         }
         return bestTarget;
-
-
-
     }
 }

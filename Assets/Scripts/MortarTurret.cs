@@ -5,12 +5,6 @@ public class MortarTurret : Turret {
 
     private float gravScale = 4 * (9.81f);
 
-    new void Awake()
-    {
-        anim = this.gameObject.GetComponent<Animator>();
-        Init("mortar");
-    }
-
     new void FixedUpdate()
     {
         if (Fire(Aim(FindUrgentEnemy())))

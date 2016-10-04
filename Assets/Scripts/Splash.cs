@@ -12,7 +12,6 @@ public class Splash : MonoBehaviour {
             if (!targets.Contains(collider))
             {
                 targets.Add(collider);
-                Debug.Log("added");
             }
         }
     }
@@ -24,7 +23,6 @@ public class Splash : MonoBehaviour {
             if (targets.Contains(collider))
             {
                 targets.Remove(collider);
-                Debug.Log("removed");
             }
         }
     }
