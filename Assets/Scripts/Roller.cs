@@ -30,6 +30,7 @@ public class Roller : Enemy {
 
         if(stunFactor != 1)
         {
+            Debug.Log("stunned");
             CheckStun();
         }
 	}

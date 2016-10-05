@@ -30,9 +30,10 @@ public class Enemy : MonoBehaviour {
         stunTime = Time.time;
     }
 
-    protected bool CheckStun()
+    protected void CheckStun()
     {
-        return (Time.time - stunTime >= stunDuration);
+        if (Time.time - stunTime >= stunDuration)
+            stunFactor = 1;
     }
 
     public void Hurt(float dam)

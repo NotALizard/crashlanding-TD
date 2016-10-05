@@ -6,6 +6,7 @@ public class Turret : MonoBehaviour {
     public GameObject ammoFab;
     protected GameObject target;
     protected Animator anim;
+    protected Bar bar;
     protected float maxRange;
     protected float damage;
     protected float inaccuracy;
@@ -50,11 +51,18 @@ public class Turret : MonoBehaviour {
         }
         lastShot = Time.time;
         anim = gameObject.GetComponent<Animator>();
+        if (transform.FindChild("Bar") != null)
+            bar = transform.FindChild("Bar").GetComponent<Bar>();
+
     }
 
     protected void FixedUpdate()
     {
         Fire(Aim(FindUrgentEnemy()));
+        if (bar != null)
+        {
+            bar.UpdateBar(Mathf.Min((Time.time - lastShot) / fireDelay, 1));
+        }
     }
 
     protected bool Aim(GameObject enemy)
