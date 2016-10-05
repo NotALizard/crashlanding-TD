@@ -17,6 +17,16 @@ public static class Constants{
     public const float TurretRapidInacc = 8;
     public const float TurretRapidRate = 0.2f;
     public static GameObject TurretRapidProj = (GameObject)Resources.Load("Prefabs/BulletFab", typeof(GameObject));
+    //Laser Turret
+    public const int LaserUses = 3;
+    public const float LaserStunDuration = 2;
+    public const float LaserStunPower = 2;
+    public const float TurretLaserDmg = 3;
+    public const float TurretLaserBulletSpd = 15;
+    public const float TurretLaserRange = 25;
+    public const float TurretLaserInacc = 0;
+    public const float TurretLaserRate = 5;
+    public static GameObject TurretLaserProj = (GameObject)Resources.Load("Prefabs/LaserFab", typeof(GameObject));
     //Mortar Turret
     public const float TurretMortarDmg = 30;
     public const float TurretMortarBulletSpd = 20;
@@ -29,5 +39,5 @@ public static class Constants{
     public static GameObject TurretBasicFab = (GameObject)Resources.Load("Prefabs/TurretBasicFab", typeof(GameObject));
     public static GameObject TurretMortarFab = (GameObject)Resources.Load("Prefabs/TurretMortarFab", typeof(GameObject));
     public static GameObject TurretRapidFab = (GameObject)Resources.Load("Prefabs/TurretRapidFab", typeof(GameObject));
-    //public static GameObject TurretLaserFab = (GameObject)Resources.Load("Prefabs/TurretLaserFab", typeof(GameObject));
+    public static GameObject TurretLaserFab = (GameObject)Resources.Load("Prefabs/TurretLaserFab", typeof(GameObject));
 }

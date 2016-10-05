@@ -5,6 +5,9 @@ public class Enemy : MonoBehaviour {
     protected float maxHealth;
     //protected float health;
     public float health;
+    protected float stunFactor = 1;
+    protected float stunTime;
+    protected float stunDuration;
     protected float damage;
     protected float speed;
     protected bool facingRight;
@@ -20,6 +23,18 @@ public class Enemy : MonoBehaviour {
         myBody2D = GetComponent<Rigidbody2D>();
     }
 
+    public void Stun(float fac, float dur)
+    {
+        stunFactor = fac;
+        stunDuration = dur;
+        stunTime = Time.time;
+    }
+
+    protected bool CheckStun()
+    {
+        return (Time.time - stunTime >= stunDuration);
+    }
+
     public void Hurt(float dam)
     {
         health = health - dam;
@@ -32,7 +47,7 @@ public class Enemy : MonoBehaviour {
         Destroy(this.gameObject);
     }
 
-    public void Flip()
+    protected void Flip()
     {
         if (facingRight)
         {

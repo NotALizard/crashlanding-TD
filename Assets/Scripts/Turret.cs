@@ -32,6 +32,14 @@ public class Turret : MonoBehaviour {
             inaccuracy = Constants.TurretRapidInacc;
             damage = Constants.TurretRapidDmg;
         }
+        else if (type.Equals("laser"))
+        {
+            maxRange = Constants.TurretLaserRange;
+            fireDelay = Constants.TurretLaserRate;
+            bulletSpeed = Constants.TurretLaserBulletSpd;
+            inaccuracy = Constants.TurretLaserInacc;
+            damage = Constants.TurretLaserDmg;
+        }
         else if (type.Equals("mortar"))
         {
             maxRange = Constants.TurretMortarRange;

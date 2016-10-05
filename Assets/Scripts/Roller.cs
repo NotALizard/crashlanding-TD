@@ -24,8 +24,13 @@ public class Roller : Enemy {
             moveDirection = -1;
         else
             moveDirection = 0;
-        myBody2D.velocity = new Vector2(moveDirection * speed, myBody2D.velocity.y);
+        myBody2D.velocity = new Vector2(moveDirection * speed / stunFactor, myBody2D.velocity.y);
         if ((moveDirection > 0 && !facingRight) || (moveDirection < 0 && facingRight))
             Flip();
+
+        if(stunFactor != 1)
+        {
+            CheckStun();
+        }
 	}
 }
