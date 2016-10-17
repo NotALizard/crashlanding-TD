@@ -67,6 +67,10 @@ public class ShopUI : MonoBehaviour {
         foreach(SpriteRenderer s in sprites){
             s.enabled = false;
         }
+        leftAnim.SetInteger("id", 0);
+        topAnim.SetInteger("id", 0);
+        rightAnim.SetInteger("id", 0);
+        bottomAnim.SetInteger("id", 0);
     }
 
     public void SetProgress(float percentage, bool left, bool top, bool right, bool bottom)

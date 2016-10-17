@@ -36,6 +36,7 @@ public static class Constants{
     public static GameObject TurretMortarProj = (GameObject)Resources.Load("Prefabs/BombFab", typeof(GameObject));
 
     //Building Assets
+    public static GameObject GhostFab = (GameObject)Resources.Load("Prefabs/ScaffoldFab", typeof(GameObject));
     public static GameObject TurretBasicFab = (GameObject)Resources.Load("Prefabs/TurretBasicFab", typeof(GameObject));
     public static GameObject TurretMortarFab = (GameObject)Resources.Load("Prefabs/TurretMortarFab", typeof(GameObject));
     public static GameObject TurretRapidFab = (GameObject)Resources.Load("Prefabs/TurretRapidFab", typeof(GameObject));

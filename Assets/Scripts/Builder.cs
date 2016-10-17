@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+//width is 3.2 units
 
 public class Builder : MonoBehaviour {
 
@@ -48,7 +49,6 @@ public class Builder : MonoBehaviour {
     public const int RepairGenSprite = 13;
     public const int BuffGenSprite = 14;
 
-
     public static int Ghost(Building b)
     {
         b.Init(Mathf.Infinity, GhostSprite);
@@ -65,6 +65,12 @@ public class Builder : MonoBehaviour {
 
     public static int Scaffold(Building b)
     {
+        if(!b.HasRoof() && b.GetHeight() <= 2)
+        {
+            GameObject g = (GameObject)Object.Instantiate(Constants.GhostFab, new Vector2( b.transform.position.x, b.transform.position.y + 3.2f), Quaternion.identity);
+            g.GetComponent<Building>().SetHeight(b.GetHeight() + 1);
+            b.SetRoof(true);
+        }
         b.Init(Mathf.Infinity, ScaffoldSprite);
         b.SetCosts(BasicTurretCost, BasicGenCost, BasicWallCost, 0);
         b.SetIcons(BasicTurretSprite, BasicGenSprite, BasicWallSprite, GhostSprite);

@@ -28,6 +28,8 @@ public class Player : MonoBehaviour {
     Gun gun;
     Detector buildingDetector;
     ShopUI shop;
+    public Transform mainCamera;
+    private Transform cameraPos;
 
     //Other
     bool canJump = true;
@@ -35,9 +37,13 @@ public class Player : MonoBehaviour {
     bool facingRight = true;
     int moveDirection;
     public LayerMask ground;
+    public LayerMask playerLayer;
+    public LayerMask platform;
     float fireTime = 0;
 
     //Upgrade Selection
+    public GameObject BuildFab;
+    public Transform BuildGrid;
     Building selectedBuilding;
     float startBuildTime;
     float doneBuildTime = 1;
@@ -46,6 +52,7 @@ public class Player : MonoBehaviour {
     bool buildingRight;
     bool selling;
     bool shopIsActive;
+    bool hasSelecton;
 
     //Status
     float health;
@@ -65,6 +72,7 @@ public class Player : MonoBehaviour {
         gun = leftArm.FindChild("Gun").GetComponent<Gun>();
         buildingDetector = transform.FindChild("Detector").GetComponent<Detector>();
         shop = transform.FindChild("Shop").GetComponent<ShopUI>();
+        cameraPos = transform.FindChild("CameraPos");
 	}
 
     void FixedUpdate()
@@ -85,8 +93,10 @@ public class Player : MonoBehaviour {
             //If the shop is still on, hide it
             if (shopIsActive)
             {
+                selectedBuilding.transform.FindChild("Selector").GetComponent<SpriteRenderer>().enabled = false;
                 shop.Sleep();
                 shopIsActive = false;
+                hasSelecton = false;
             }
 
             //Walking
@@ -109,7 +119,7 @@ public class Player : MonoBehaviour {
             myBody2D.velocity = new Vector2(moveDirection * runSpeed, myBody2D.velocity.y);
 
             //Jumping
-            if (Physics2D.OverlapArea(footTR.position, footBL.position, ground) && myBody2D.velocity.y < 0.01)
+            if ((Physics2D.OverlapArea(footTR.position, footBL.position, ground) || Physics2D.OverlapArea(footTR.position, footBL.position, platform)) && myBody2D.velocity.y < 0.01)
             {
                 if (anim.GetBool("jump"))
                 {
@@ -121,6 +131,7 @@ public class Player : MonoBehaviour {
             if (canJump && jump && !build)
             {
                 anim.SetBool("jump", true);
+                Physics2D.IgnoreLayerCollision(playerLayer, platform, true);
                 myBody2D.velocity = new Vector3(myBody2D.velocity.x, jumpHeight);
                 canJump = false;
             }
@@ -149,14 +160,19 @@ public class Player : MonoBehaviour {
         {
             //Prevent movement so that the player can make their selection
             myBody2D.velocity = new Vector2(0, myBody2D.velocity.y);
-            selectedBuilding = buildingDetector.GetSelection();
+            if (!hasSelecton)
+            {
+                selectedBuilding = buildingDetector.GetSelection();
+                hasSelecton = true;
+            }
 
             //Make sure they have a building selected
-            if(selectedBuilding != null)
+            if (selectedBuilding != null)
             {
                 //Bring up the shop UI
                 if (!shopIsActive)
                 {
+                    selectedBuilding.transform.FindChild("Selector").GetComponent<SpriteRenderer>().enabled = true;
                     shop.DisplayShop(selectedBuilding.GetCosts(), selectedBuilding.GetIcons(), selectedBuilding.GetTechLevels());
                     shopIsActive = true;
                 }
@@ -244,6 +260,14 @@ public class Player : MonoBehaviour {
                 }
                 shop.SetProgress((Time.time - startBuildTime) / doneBuildTime, buildingLeft, buildingTop, buildingRight, selling);
             }
+            //If the player is on the ground and not in front of a building tile, create one
+            else if (transform.position.y < -1.15 && canJump)
+            {
+                GameObject g = (GameObject)Object.Instantiate(BuildFab, new Vector2(Mathf.Floor(transform.position.x / 3.2f) * 3.2f + BuildGrid.position.x, BuildGrid.position.y), Quaternion.identity);
+                buildingDetector.SetSelection(g.GetComponent<Building>());
+                selectedBuilding = buildingDetector.GetSelection();
+                hasSelecton = true;
+            }
         }
 
         //Actions not affected by building
@@ -263,8 +287,6 @@ public class Player : MonoBehaviour {
             anim.SetBool("movingBack", false);
         }
 
-        
-
         //Shooting
         if (fire && Time.time - fireTime > fireDelay)
         {
@@ -272,6 +294,15 @@ public class Player : MonoBehaviour {
             gun.Fire(shots, spread, damage);
             
         }
+
+        //Platforms
+        if(!canJump && myBody2D.velocity.y < 0)
+        {
+            Physics2D.IgnoreLayerCollision(playerLayer, platform, false);
+        }
+
+        //Camera Follow
+        mainCamera.position = new Vector3(cameraPos.position.x, cameraPos.position.y, mainCamera.position.z);
 
     }
 
@@ -282,11 +313,13 @@ public class Player : MonoBehaviour {
         {
             transform.rotation = Quaternion.Euler(0, 180, 0);
             facingRight = false;
+            transform.FindChild("Shop").localRotation = Quaternion.Euler(0, 180, 0);
         }
         else if (!facingRight)
         {
             transform.rotation = Quaternion.Euler(0, 0, 0);
             facingRight = true;
+            transform.FindChild("Shop").localRotation = Quaternion.Euler(0, 0, 0);
         }
     }
 

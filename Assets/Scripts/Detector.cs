@@ -23,5 +23,7 @@ public class Detector : MonoBehaviour {
     }
 
     public Building GetSelection() { return selection; }
+
+    public void SetSelection(Building s) { selection = s; }
 	
 }

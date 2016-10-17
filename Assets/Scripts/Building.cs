@@ -19,6 +19,8 @@ public class Building : MonoBehaviour {
     //Status
     private float maxHealth;
     private float health;
+    private bool hasRoof;
+    private int height = 0;
     private GameObject activeObject;
 
 
@@ -71,6 +73,26 @@ public class Building : MonoBehaviour {
     public void SetActiveObj(GameObject obj)
     {
         activeObject = obj;
+    }
+
+    public int GetHeight()
+    {
+        return height;
+    }
+
+    public void SetHeight(int h)
+    {
+        height = h;
+    }
+
+    public bool HasRoof()
+    {
+        return hasRoof;
+    }
+
+    public void SetRoof(bool b)
+    {
+        hasRoof = b;
     }
 
 }
