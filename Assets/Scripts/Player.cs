@@ -92,7 +92,10 @@ public class Player : MonoBehaviour {
             //If the shop is still on, hide it
             if (shopIsActive)
             {
-                selectedBuilding.transform.FindChild("Selector").GetComponent<SpriteRenderer>().enabled = false;
+                if(selectedBuilding != null)
+                {
+                    selectedBuilding.transform.FindChild("Selector").GetComponent<SpriteRenderer>().enabled = false;
+                }
                 shop.Sleep();
                 shopIsActive = false;
             }
@@ -158,13 +161,13 @@ public class Player : MonoBehaviour {
                 if (buildingDetector.HasChanged() || !shopIsActive)
                 {
                     shopIsActive = true;
-                    selectedBuilding.transform.FindChild("Selector").GetComponent<SpriteRenderer>().enabled = true;
-                    shop.DisplayShop(selectedBuilding.GetCosts(), selectedBuilding.GetIcons(), selectedBuilding.GetTechLevels());
-                    Building prev = buildingDetector.GetPrevious();
-                    if (prev != null)
+                    if (UIBuilding != null)
                     {
-                        prev.transform.FindChild("Selector").GetComponent<SpriteRenderer>().enabled = false;
+                        UIBuilding.transform.FindChild("Selector").GetComponent<SpriteRenderer>().enabled = false;
                     }
+                    selectedBuilding.transform.FindChild("Selector").GetComponent<SpriteRenderer>().enabled = true;
+                    UIBuilding = selectedBuilding;
+                    shop.DisplayShop(selectedBuilding.GetCosts(), selectedBuilding.GetIcons(), selectedBuilding.GetTechLevels());
                     buildingDetector.SetChanged(false);
                 }
                 
@@ -257,6 +260,12 @@ public class Player : MonoBehaviour {
             {
                 GameObject g = (GameObject)Object.Instantiate(BuildFab, new Vector2(Mathf.Floor(transform.position.x / 3.2f) * 3.2f + BuildGrid.position.x, BuildGrid.position.y), Quaternion.identity);
                 buildingDetector.SetSelection(g.GetComponent<Building>());
+            }
+
+            else if (UIBuilding != null)
+            {
+                UIBuilding.transform.FindChild("Selector").GetComponent<SpriteRenderer>().enabled = false;
+                UIBuilding = null;
             }
         }
 
