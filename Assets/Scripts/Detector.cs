@@ -3,14 +3,21 @@ using System.Collections;
 
 public class Detector : MonoBehaviour {
     private Building selection;
+    private Building prev;
+    private bool changed;
 
     //Scan for buildings behind the player
     void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.CompareTag("Scaffold") || collider.CompareTag("Building"))
         {
-            Debug.Log("set");
-            selection = collider.GetComponent<Building>();
+            Building b = collider.GetComponent<Building>();
+            if (b != selection)
+            {
+                changed = true;
+            }
+            prev = selection;
+            selection = b;
         }
     }
 
@@ -27,5 +34,11 @@ public class Detector : MonoBehaviour {
     public Building GetSelection() { return selection; }
 
     public void SetSelection(Building s) { selection = s; }
+
+    public bool HasChanged() { return changed; }
+
+    public void SetChanged(bool c) { changed = c; }
+
+    public Building GetPrevious() { return prev; }
 	
 }

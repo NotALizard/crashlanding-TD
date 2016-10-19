@@ -44,6 +44,7 @@ public class Player : MonoBehaviour {
     public GameObject BuildFab;
     public Transform BuildGrid;
     Building selectedBuilding;
+    Building UIBuilding;
     float startBuildTime;
     float doneBuildTime = 1;
     bool buildingLeft;
@@ -153,13 +154,20 @@ public class Player : MonoBehaviour {
             //Make sure they have a building selected
             if (selectedBuilding != null)
             {
-                //Bring up the shop UI
-                if (!shopIsActive)
+                //Update up the shop UI
+                if (buildingDetector.HasChanged() || !shopIsActive)
                 {
+                    shopIsActive = true;
                     selectedBuilding.transform.FindChild("Selector").GetComponent<SpriteRenderer>().enabled = true;
                     shop.DisplayShop(selectedBuilding.GetCosts(), selectedBuilding.GetIcons(), selectedBuilding.GetTechLevels());
-                    shopIsActive = true;
+                    Building prev = buildingDetector.GetPrevious();
+                    if (prev != null)
+                    {
+                        prev.transform.FindChild("Selector").GetComponent<SpriteRenderer>().enabled = false;
+                    }
+                    buildingDetector.SetChanged(false);
                 }
+                
 
                 //Choosing left option
                 if (left && !(right || jump || crouch) && selectedBuilding.leftOpt != null)
