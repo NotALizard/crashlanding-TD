@@ -37,7 +37,6 @@ public class Player : MonoBehaviour {
     bool facingRight = true;
     int moveDirection;
     public LayerMask ground;
-    public LayerMask playerLayer;
     public LayerMask platform;
     float fireTime = 0;
 
@@ -119,19 +118,10 @@ public class Player : MonoBehaviour {
             myBody2D.velocity = new Vector2(moveDirection * runSpeed, myBody2D.velocity.y);
 
             //Jumping
-            if ((Physics2D.OverlapArea(footTR.position, footBL.position, ground) || Physics2D.OverlapArea(footTR.position, footBL.position, platform)) && myBody2D.velocity.y < 0.01)
-            {
-                if (anim.GetBool("jump"))
-                {
-                    anim.SetBool("jump", false);
-                }
-                canJump = true;
-            }
-
             if (canJump && jump && !build)
             {
                 anim.SetBool("jump", true);
-                Physics2D.IgnoreLayerCollision(playerLayer, platform, true);
+                Physics2D.IgnoreLayerCollision(Constants.PlayerLayer, Constants.PlatformLayer, true);
                 myBody2D.velocity = new Vector3(myBody2D.velocity.x, jumpHeight);
                 canJump = false;
             }
@@ -270,6 +260,16 @@ public class Player : MonoBehaviour {
             }
         }
 
+        //Landing
+        if ((Physics2D.OverlapArea(footTR.position, footBL.position, ground) || Physics2D.OverlapArea(footTR.position, footBL.position, platform)) && myBody2D.velocity.y < 0.01)
+        {
+            if (anim.GetBool("jump"))
+            {
+                anim.SetBool("jump", false);
+            }
+            canJump = true;
+        }
+
         //Actions not affected by building
         anim.SetFloat("speed", Mathf.Abs(myBody2D.velocity.x));
 
@@ -298,11 +298,11 @@ public class Player : MonoBehaviour {
         //Platforms
         if(!canJump && myBody2D.velocity.y < 0)
         {
-            Physics2D.IgnoreLayerCollision(playerLayer, platform, false);
+            Physics2D.IgnoreLayerCollision(Constants.PlayerLayer, Constants.PlatformLayer, false);
         }
 
         //Camera Follow
-        mainCamera.position = new Vector3(cameraPos.position.x, cameraPos.position.y, mainCamera.position.z);
+        mainCamera.position = new Vector3(cameraPos.position.x, mainCamera.position.y, mainCamera.position.z);
 
     }
 

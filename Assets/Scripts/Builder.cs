@@ -70,6 +70,7 @@ public class Builder : MonoBehaviour {
             GameObject g = (GameObject)Object.Instantiate(Constants.GhostFab, new Vector2( b.transform.position.x, b.transform.position.y + 3.2f), Quaternion.identity);
             g.GetComponent<Building>().SetHeight(b.GetHeight() + 1);
             b.SetRoof(true);
+            b.transform.FindChild("Platform").GetComponent<BoxCollider2D>().enabled = true;
         }
         b.Init(Mathf.Infinity, ScaffoldSprite);
         b.SetCosts(BasicTurretCost, BasicGenCost, BasicWallCost, 0);
@@ -91,8 +92,8 @@ public class Builder : MonoBehaviour {
         b.SetIcons(RapidTurretSprite, MortarTurretSprite, LaserTurretSprite, SellSprite);
         b.SetTechLevels(1, 2, 3);
         b.leftOpt = RapidTurret;
-        b.topOpt = LaserTurret;
-        b.rightOpt = MortarTurret;
+        b.topOpt = MortarTurret;
+        b.rightOpt = LaserTurret;
         b.sellOpt = Scaffold;
         b.gameObject.tag = "Building";
         SetActiveObj(b, (GameObject)Object.Instantiate(Constants.TurretBasicFab, b.transform.position, Quaternion.identity));

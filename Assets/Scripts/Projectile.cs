@@ -4,6 +4,7 @@ using System.Collections;
 public abstract class Projectile : MonoBehaviour {
     protected float damage;
     protected Rigidbody2D myRigidbody;
+    protected bool cloned;
 
     public void Init(float angle, float projectileDamage, float speed)
     {
@@ -21,6 +22,26 @@ public abstract class Projectile : MonoBehaviour {
     public float GetDamage()
     {
         return damage;
+    }
+
+    public float GetSpeed()
+    {
+        return myRigidbody.velocity.magnitude;
+    }
+
+    public float GetAngle()
+    {
+        return Vector2.Angle(Vector2.right, myRigidbody.velocity);
+    }
+
+    public bool IsCloned()
+    {
+        return cloned;
+    }
+
+    public void SetCloned(bool c)
+    {
+        cloned = c;
     }
 
 }

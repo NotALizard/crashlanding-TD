@@ -9,6 +9,13 @@ public class Bullet : Projectile {
             Destroy(this.gameObject);
         else if (collider.CompareTag("Enemy"))
             Attack(collider.GetComponent<Enemy>());
+        else if (collider.CompareTag("Refract"))
+        {
+            GameObject c1 = (GameObject)Object.Instantiate(this.gameObject);
+            c1.GetComponent<Projectile>().Init(GetAngle() + 5, GetDamage(), GetSpeed());
+            GameObject c2 = (GameObject)Object.Instantiate(this.gameObject);
+            c2.GetComponent<Projectile>().Init(GetAngle() - 5, GetDamage(), GetSpeed());
+        }
     }
 
     private void Attack(Enemy enemy)

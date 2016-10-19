@@ -9,7 +9,8 @@ public class Detector : MonoBehaviour {
     {
         if (collider.CompareTag("Scaffold") || collider.CompareTag("Building"))
         {
-        selection = collider.GetComponent<Building>();
+            Debug.Log("set");
+            selection = collider.GetComponent<Building>();
         }
     }
 
@@ -18,6 +19,7 @@ public class Detector : MonoBehaviour {
     {
         if(collider.GetComponent<Building>() == selection)
         {
+            Debug.Log("cleared");
             selection = null;
         }
     }
