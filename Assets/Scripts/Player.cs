@@ -51,7 +51,6 @@ public class Player : MonoBehaviour {
     bool buildingRight;
     bool selling;
     bool shopIsActive;
-    bool hasSelecton;
 
     //Status
     float health;
@@ -95,7 +94,6 @@ public class Player : MonoBehaviour {
                 selectedBuilding.transform.FindChild("Selector").GetComponent<SpriteRenderer>().enabled = false;
                 shop.Sleep();
                 shopIsActive = false;
-                hasSelecton = false;
             }
 
             //Walking
@@ -150,11 +148,7 @@ public class Player : MonoBehaviour {
         {
             //Prevent movement so that the player can make their selection
             myBody2D.velocity = new Vector2(0, myBody2D.velocity.y);
-            if (!hasSelecton)
-            {
-                selectedBuilding = buildingDetector.GetSelection();
-                hasSelecton = true;
-            }
+            selectedBuilding = buildingDetector.GetSelection();
 
             //Make sure they have a building selected
             if (selectedBuilding != null)
@@ -255,8 +249,6 @@ public class Player : MonoBehaviour {
             {
                 GameObject g = (GameObject)Object.Instantiate(BuildFab, new Vector2(Mathf.Floor(transform.position.x / 3.2f) * 3.2f + BuildGrid.position.x, BuildGrid.position.y), Quaternion.identity);
                 buildingDetector.SetSelection(g.GetComponent<Building>());
-                selectedBuilding = buildingDetector.GetSelection();
-                hasSelecton = true;
             }
         }
 
