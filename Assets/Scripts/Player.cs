@@ -133,6 +133,8 @@ public class Player : MonoBehaviour {
             {
                 anim.SetBool("isCrouch", true);
                 isCrouching = true;
+                canJump = false;
+                Physics2D.IgnoreLayerCollision(Constants.PlayerLayer, Constants.PlatformLayer, true);
                 leftArm.localPosition = new Vector3(leftArm.localPosition.x, leftArm.localPosition.y - 0.04f, leftArm.localPosition.z);
                 rightArm.localPosition = new Vector3(rightArm.localPosition.x, rightArm.localPosition.y - 0.04f, rightArm.localPosition.z);
 
@@ -276,7 +278,10 @@ public class Player : MonoBehaviour {
             {
                 anim.SetBool("jump", false);
             }
-            canJump = true;
+            if (!isCrouching)
+            {
+                canJump = true;
+            }
         }
 
         //Actions not affected by building
@@ -305,7 +310,7 @@ public class Player : MonoBehaviour {
         }
 
         //Platforms
-        if(!canJump && myBody2D.velocity.y < 0)
+        if(/*!canJump && */!isCrouching && myBody2D.velocity.y < -0.1)
         {
             Physics2D.IgnoreLayerCollision(Constants.PlayerLayer, Constants.PlatformLayer, false);
         }
