@@ -41,6 +41,7 @@ public static class Constants{
     public static GameObject TurretMortarFab = (GameObject)Resources.Load("Prefabs/TurretMortarFab", typeof(GameObject));
     public static GameObject TurretRapidFab = (GameObject)Resources.Load("Prefabs/TurretRapidFab", typeof(GameObject));
     public static GameObject TurretLaserFab = (GameObject)Resources.Load("Prefabs/TurretLaserFab", typeof(GameObject));
+    public static GameObject RefractorFab = (GameObject)Resources.Load("Prefabs/RefractorFab", typeof(GameObject));
 
     //Layers
     public const int PlayerLayer = 9;

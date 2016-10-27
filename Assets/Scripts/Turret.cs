@@ -81,7 +81,7 @@ public class Turret : MonoBehaviour {
         if(Time.time - lastShot >= fireDelay && hasTarget)
         {
             GameObject projectile = (GameObject)GameObject.Instantiate(ammoFab, transform.FindChild("BulletPos").position, transform.localRotation);
-            projectile.GetComponent<Projectile>().Init(transform.eulerAngles.z + Random.Range(0, inaccuracy) - (inaccuracy / 2), damage, bulletSpeed);
+            projectile.GetComponent<Projectile>().Init(transform.eulerAngles.z + Random.Range(0, inaccuracy) - (inaccuracy / 2), damage, bulletSpeed, false);
             lastShot = Time.time;
             if(anim != null)
             {

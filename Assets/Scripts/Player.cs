@@ -310,7 +310,7 @@ public class Player : MonoBehaviour {
         }
 
         //Platforms
-        if(/*!canJump && */!isCrouching && myBody2D.velocity.y < -0.1)
+        if(!isCrouching && myBody2D.velocity.y < -0.1)
         {
             Physics2D.IgnoreLayerCollision(Constants.PlayerLayer, Constants.PlatformLayer, false);
         }

@@ -100,7 +100,7 @@ public class Gun : MonoBehaviour {
         for (int i = 0; i < num; i++)
         {
             script = ((GameObject)Instantiate(bulletFab, bulletSpawn.position, transform.rotation)).GetComponent<Bullet>();
-            script.Init((Random.Range(0, spread) - (spread / 2) + tempAngle), dmg, 20 /*temp speed*/);
+            script.Init((Random.Range(0, spread) - (spread / 2) + tempAngle), dmg, 20 /*temp speed*/, false);
             
         }
     }

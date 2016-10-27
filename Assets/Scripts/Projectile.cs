@@ -6,10 +6,11 @@ public abstract class Projectile : MonoBehaviour {
     protected Rigidbody2D myRigidbody;
     protected bool cloned;
 
-    public void Init(float angle, float projectileDamage, float speed)
+    public void Init(float angle, float projectileDamage, float speed, bool clone)
     {
         damage = projectileDamage;
         UpdateVelocity(angle, speed);
+        cloned = clone;
     }
 
     public void UpdateVelocity(float angle, float speed)
@@ -31,7 +32,22 @@ public abstract class Projectile : MonoBehaviour {
 
     public float GetAngle()
     {
-        return Vector2.Angle(Vector2.right, myRigidbody.velocity);
+        float angle = Vector2.Angle(Vector2.right, myRigidbody.velocity);
+        if(myRigidbody.velocity.y < 0)
+        {
+            angle = 360 - angle;
+        }
+        return angle;
+    }
+
+    protected void makeClones()
+    {
+        cloned = true;
+        GameObject c1 = (GameObject)Object.Instantiate(this.gameObject);
+        Debug.Log(GetAngle());
+        c1.GetComponent<Projectile>().Init(GetAngle() + 5, GetDamage(), GetSpeed(), true);
+        GameObject c2 = (GameObject)Object.Instantiate(this.gameObject);
+        c2.GetComponent<Projectile>().Init(GetAngle() - 5, GetDamage(), GetSpeed(), true);
     }
 
     public bool IsCloned()

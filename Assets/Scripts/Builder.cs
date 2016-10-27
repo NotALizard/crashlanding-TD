@@ -260,6 +260,7 @@ public class Builder : MonoBehaviour {
         b.rightOpt = null;
         b.sellOpt = BasicWall;
         b.gameObject.tag = "Building";
+        SetActiveObj(b, (GameObject)Object.Instantiate(Constants.RefractorFab, b.transform.position, Quaternion.identity));
         return (RefractWallCost);
     }
 

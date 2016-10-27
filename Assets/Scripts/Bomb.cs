@@ -16,6 +16,10 @@ public class Bomb : Projectile
             Destroy(this.gameObject);
         else if (collider.CompareTag("Ground"))
             Attack();
+        else if (!cloned && collider.CompareTag("Refract"))
+        {
+            makeClones();
+        }
     }
 
     private void Attack()
