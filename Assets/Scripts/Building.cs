@@ -12,13 +12,13 @@ public class Building : MonoBehaviour {
     public BuildDel topOpt;
     public BuildDel rightOpt;
     public BuildDel sellOpt;
-    private int[] upgradeCosts = new int[4];
-    private int[] upgradeIcons = new int[4];
-    private int[] minTechLevels = new int[3];
+    protected int[] upgradeCosts = new int[4];
+    protected int[] upgradeIcons = new int[4];
+    protected int[] minTechLevels = new int[3];
 
     //Status
-    private float maxHealth;
-    private float health;
+    protected float maxHealth;
+    protected float health;
     private bool hasRoof;
     private int height = 0;
     private GameObject activeObject;
