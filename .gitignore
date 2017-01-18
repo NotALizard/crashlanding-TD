@@ -1,6 +1,5 @@
 #.gitignore file
 Temp/*
-Library/*
 Build/*
 Assets/Textures/UI/Thumbs.db.meta
 
