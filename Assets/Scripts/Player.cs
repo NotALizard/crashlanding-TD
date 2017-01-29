@@ -99,6 +99,8 @@ public class Player : MonoBehaviour {
                 shop.Sleep();
                 shopIsActive = false;
             }
+            //Reset the shop progress
+            startBuildTime = Time.time;
 
             //Walking
             if (left && !right)
