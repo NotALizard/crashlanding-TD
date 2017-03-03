@@ -3,6 +3,7 @@ using System.Collections;
 
 public class Turret : MonoBehaviour {
 
+    public enum TurretType { basic, rapid, laser, mortar }
     public GameObject ammoFab;
     protected GameObject target;
     protected Animator anim;
@@ -15,9 +16,9 @@ public class Turret : MonoBehaviour {
     protected float lastShot;
     protected bool idling;
 
-    public void Init(string type)
+    public void Init(TurretType type)
     {
-        if (type.Equals("basic"))
+        if (type == TurretType.basic)
         {
             maxRange = Constants.TurretBasicRange;
             fireDelay = Constants.TurretBasicRate;
@@ -25,7 +26,7 @@ public class Turret : MonoBehaviour {
             inaccuracy = Constants.TurretBasicInacc;
             damage = Constants.TurretBasicDmg;
         }
-        else if (type.Equals("rapid"))
+        else if (type == TurretType.rapid)
         {
             maxRange = Constants.TurretRapidRange;
             fireDelay = Constants.TurretRapidRate;
@@ -33,7 +34,7 @@ public class Turret : MonoBehaviour {
             inaccuracy = Constants.TurretRapidInacc;
             damage = Constants.TurretRapidDmg;
         }
-        else if (type.Equals("laser"))
+        else if (type == TurretType.laser)
         {
             maxRange = Constants.TurretLaserRange;
             fireDelay = Constants.TurretLaserRate;
@@ -41,7 +42,7 @@ public class Turret : MonoBehaviour {
             inaccuracy = Constants.TurretLaserInacc;
             damage = Constants.TurretLaserDmg;
         }
-        else if (type.Equals("mortar"))
+        else if (type == TurretType.mortar)
         {
             maxRange = Constants.TurretMortarRange;
             fireDelay = Constants.TurretMortarRate;

@@ -1,7 +1,7 @@
 #.gitignore file
 Temp/*
 Build/*
-Library/*
+Library
 Assets/Textures/UI/Thumbs.db.meta
 
 #Un-ignore these specific files

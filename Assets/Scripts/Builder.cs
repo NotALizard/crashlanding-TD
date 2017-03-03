@@ -97,7 +97,7 @@ public class Builder : MonoBehaviour {
         b.sellOpt = Scaffold;
         b.gameObject.tag = "Building";
         SetActiveObj(b, (GameObject)Object.Instantiate(Constants.TurretBasicFab, b.transform.position, Quaternion.identity));
-        b.GetActiveObj().GetComponent<Turret>().Init("basic");
+        b.GetActiveObj().GetComponent<Turret>().Init(Turret.TurretType.basic);
         return (BasicTurretCost);
     }
 
@@ -143,7 +143,7 @@ public class Builder : MonoBehaviour {
         b.sellOpt = BasicTurret;
         b.gameObject.tag = "Building";
         SetActiveObj(b, (GameObject)Object.Instantiate(Constants.TurretRapidFab, b.transform.position, Quaternion.identity));
-        b.GetActiveObj().GetComponent<Turret>().Init("rapid");
+        b.GetActiveObj().GetComponent<Turret>().Init(Turret.TurretType.rapid);
         return (RapidTurretCost);
     }
 
@@ -159,7 +159,7 @@ public class Builder : MonoBehaviour {
         b.sellOpt = BasicTurret;
         b.gameObject.tag = "Building";
         SetActiveObj(b, (GameObject)Object.Instantiate(Constants.TurretMortarFab, b.transform.position, Quaternion.identity));
-        b.GetActiveObj().GetComponent<Turret>().Init("mortar");
+        b.GetActiveObj().GetComponent<Turret>().Init(Turret.TurretType.mortar);
         return (MortarTurretCost);
     }
 
@@ -175,7 +175,7 @@ public class Builder : MonoBehaviour {
         b.sellOpt = BasicTurret;
         b.gameObject.tag = "Building";
         SetActiveObj(b, (GameObject)Object.Instantiate(Constants.TurretLaserFab, b.transform.position, Quaternion.identity));
-        b.GetActiveObj().GetComponent<Turret>().Init("laser");
+        b.GetActiveObj().GetComponent<Turret>().Init(Turret.TurretType.laser);
         return (LaserTurretCost);
     }
 
